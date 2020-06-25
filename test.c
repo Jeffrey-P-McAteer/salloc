@@ -30,13 +30,18 @@ int main(int argc, char** argv) {
     shared_memory_file_path = argv[1];
   }
 
+  // Sleep for some random number of MS
+  pid_t our_pid = getpid();
+  srand(our_pid);
+  usleep(200 * (rand() % 500)); // anywhere from 0ms to 100ms, with 0.5ms increments
+
   // Start allocator
   SallocCtx* ctx = malloc(sizeof(SallocCtx));
   salloc_init(ctx, shared_memory_file_path);
 
   // Print updates every quarter second
-  pid_t our_pid = getpid();
-  while (1) {
+  int max_iter = 100;
+  while (max_iter --> 0) {
     usleep(250000);
     
     // More TODO
